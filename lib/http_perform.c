@@ -226,6 +226,13 @@ sf_bool STDCALL http_perform(CURL *curl,
             break;
         }
 
+        // Follow redirects
+        res = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        if (res != CURLE_OK) {
+            log_error("Failed to enable redirects [%s]", curl_easy_strerror(res));
+            break;
+        }
+
         if (DEBUG) {
             curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, my_trace);
             curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &config);
